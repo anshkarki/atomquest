@@ -6,7 +6,7 @@
 
 ## 🔗 Live Demo
 
-**URL:** `https://YOUR-DEPLOYED-APP-URL.web.app`
+**URL:** `https://anshkarki-atomquest.vercel.app/login`
 
 | Role | Email | Password |
 |------|-------|----------|
