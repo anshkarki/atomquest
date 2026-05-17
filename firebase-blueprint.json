@@ -1,0 +1,111 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "System user with role and hierarchy information",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["employee", "manager", "admin"] },
+        "managerId": { "type": "string", "description": "UID of the L1 manager" },
+        "department": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "role"]
+    },
+    "GoalCycle": {
+      "title": "Goal Cycle",
+      "description": "A specific time period for goal setting and tracking",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "phase": { "type": "string", "enum": ["goal_setting", "Q1", "Q2", "Q3", "Q4"] },
+        "windowOpenDate": { "type": "string", "format": "date-time" },
+        "windowCloseDate": { "type": "string", "format": "date-time" },
+        "isActive": { "type": "boolean" }
+      },
+      "required": ["name", "phase", "isActive"]
+    },
+    "GoalSheet": {
+      "title": "Goal Sheet",
+      "description": "Container for an employee's goals in a cycle",
+      "type": "object",
+      "properties": {
+        "employeeId": { "type": "string" },
+        "cycleId": { "type": "string" },
+        "status": { "type": "string", "enum": ["draft", "submitted", "approved", "returned"] },
+        "submittedAt": { "type": "string", "format": "date-time" },
+        "approvedAt": { "type": "string", "format": "date-time" },
+        "approvedBy": { "type": "string" }
+      },
+      "required": ["employeeId", "cycleId", "status"]
+    },
+    "Goal": {
+      "title": "Goal",
+      "description": "Specific individual goal",
+      "type": "object",
+      "properties": {
+        "goalSheetId": { "type": "string" },
+        "thrustArea": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "uomType": { "type": "string", "enum": ["numeric_min", "numeric_max", "timeline", "zero"] },
+        "targetValue": { "type": "string" },
+        "weightage": { "type": "number" },
+        "isShared": { "type": "boolean" },
+        "sharedFromGoalId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["goalSheetId", "title", "uomType", "targetValue", "weightage"]
+    },
+    "GoalAchievement": {
+      "title": "Goal Achievement",
+      "description": "Actual performance capture for a goal in a phase",
+      "type": "object",
+      "properties": {
+        "goalId": { "type": "string" },
+        "cyclePhase": { "type": "string" },
+        "actualValue": { "type": "string" },
+        "status": { "type": "string", "enum": ["not_started", "on_track", "completed"] },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["goalId", "cyclePhase", "actualValue", "status"]
+    },
+    "CheckinComment": {
+      "title": "Check-in Comment",
+      "description": "Manager comments on progress",
+      "type": "object",
+      "properties": {
+        "goalSheetId": { "type": "string" },
+        "managerId": { "type": "string" },
+        "comment": { "type": "string" },
+        "phase": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "AuditLog": {
+      "title": "Audit Log",
+      "description": "Change history for security and compliance",
+      "type": "object",
+      "properties": {
+        "entityType": { "type": "string" },
+        "entityId": { "type": "string" },
+        "changedBy": { "type": "string" },
+        "changeDescription": { "type": "string" },
+        "oldValue": { "type": "object" },
+        "newValue": { "type": "object" },
+        "changedAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "firestore": {
+    "users/{userId}": { "schema": "User", "description": "User profiles" },
+    "cycles/{cycleId}": { "schema": "GoalCycle", "description": "Goal cycles configuration" },
+    "goalSheets/{goalSheetId}": { "schema": "GoalSheet", "description": "Goal sheets for employees" },
+    "goalSheets/{goalSheetId}/goals/{goalId}": { "schema": "Goal", "description": "Goals within a sheet" },
+    "goals/{goalId}/achievements/{achievementId}": { "schema": "GoalAchievement", "description": "Achievement tracking records" },
+    "goalSheets/{goalSheetId}/comments/{commentId}": { "schema": "CheckinComment", "description": "Manager check-in comments" },
+    "auditLogs/{logId}": { "schema": "AuditLog", "description": "System-wide audit trail" }
+  }
+}

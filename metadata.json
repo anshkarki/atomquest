@@ -1,0 +1,6 @@
+{
+  "name": "AtomQuest",
+  "description": "A comprehensive goal setting and tracking portal for organizational performance management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
